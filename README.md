@@ -1,4 +1,4 @@
-# Grid Mapping with ROS Noetic (Docker)
+# Grid Mapping with ROS Noetic
 
 This repository provides a **ROS Noetic**-based implementation for grid mapping using Docker. It includes scripts and tools for creating occupancy grid maps from ROS bag files.
 
