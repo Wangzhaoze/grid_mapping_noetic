@@ -39,8 +39,19 @@ git clone git@github.com:Wangzhaoze/grid_mapping_noetic.git
 ### ⚙️ 3.1. Setup Instructions using Docker
 
 #### 3.1.1. Allow X11 access for Docker
+- In Linux
 ```bash
 xhost +local:docker
+```
+
+- In Windows:
+```
+install [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
+Display settings: Multiple windows
+Display number: 0
+Client startup: Start no client
+Extra settings: Select Disable access control
+(In PowerShell): $env:DISPLAY="host.docker.internal:0.0"
 ```
 
 #### 3.1.2. Pull ROS Noetic Docker image
