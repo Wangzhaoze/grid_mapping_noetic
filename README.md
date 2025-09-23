@@ -9,10 +9,9 @@ This repository provides a **ROS Noetic**-based implementation for grid mapping 
 ```
 grid_mapping_noetic/
 │── bagfiles/             # Example ROS bag files
-│── bagfiles.zip          # Compressed bag files
 │── CMakeLists.txt        # Catkin build configuration
 │── Dockerfile            # Docker build file (optional)
-│── maps/                 # Generated occupancy grid maps
+│── figures/              # Generated occupancy grid maps
 │── package.xml           # ROS package manifest
 │── papers/               # Related research papers
 │── README.txt            # Original notes
