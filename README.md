@@ -35,88 +35,65 @@ git clone git@github.com:Wangzhaoze/grid_mapping_noetic.git
 ```
 
 ---
-### ⚙️ 3.1. Setup Instructions using Docker
+### ⚙️ 3. Setup using Docker
 
-#### 3.1.1. Allow X11 access for Docker
-- In Linux
+#### 3.1. Allow X11 access for Docker
+
+To visualize GUI applications inside Docker, you need to configure X11 access.
+
+- **On Linux**
 ```bash
 xhost +local:docker
 ```
 
-- In Windows:
-```
-install [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
-Display settings: Multiple windows
-Display number: 0
-Client startup: Start no client
-Extra settings: Select Disable access control
-(In PowerShell): $env:DISPLAY="host.docker.internal:0.0"
+- **On Windows**
+1. Install [VcXsrv](https://sourceforge.net/projects/vcxsrv/).
+2. Configure VcXsrv with the following settings:
+   - **Display settings**: Multiple windows  
+   - **Display number**: `0`  
+   - **Client startup**: Start no client  
+   - **Extra settings**: Enable `Disable access control`  
+3. In PowerShell, set the `DISPLAY` environment variable:
+   ```powershell
+   $env:DISPLAY="host.docker.internal:0.0"
+   ```
+
+#### 3.2. Docker Image
+##### (Option 1): Pull and Run the Docker Container
+Download docker image directly from DockerHub:
+```powershell
+docker pull wangzhaoze/grid_mapping_noetic:1.0
 ```
 
-#### 3.1.2. Pull ROS Noetic Docker image
-```bash
-docker pull ros:noetic
+##### (Option 2): Build and Run the Docker Container
+Build the Docker image:
+```powershell
+docker build -t grid_mapping_noetic .
 ```
 
-#### 3.1.3. Run the Docker container
-```bash
-docker run -it \
-    --name grid_mapping_noetic \
-    --net=host \
-    --env="DISPLAY=$DISPLAY" \
-    --env="QT_X11_NO_MITSHM=1" \
-    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-    --volume="$(pwd)/grid_mapping_noetic/:/root/catkin_ws/src/grid_mapping_noetic/" \
-    ros:noetic
+#### 3.3. Run the container:
+```powershell
+docker run -it -e DISPLAY=$env:DISPLAY grid_mapping_noetic
 ```
 
-#### ---- From Here Inside the Container ----
-#### 3.1.4. Setup Catkin workspace
-```bash
-cd ~/catkin_ws/
-rosdep update
-rosdep install --from-paths src --ignore-src -r -y
-```
-
-#### 3.1.5. Install dependencies
-```bash
-apt update
-apt install -y python3-pip python3-opencv python3-matplotlib
-pip3 install numpy
-apt install ros-noetic-tf -y
-```
-
-#### 3.1.6. Configure ROS environment
-```bash
-echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
-source ~/.bashrc
-```
-
-#### 3.1.7. Build the workspace
-```bash
-catkin_make
-source devel/setup.bash
-```
-
-#### 3.1.8. Make scripts executable
-```bash
-chmod +x src/grid_mapping_noetic/scripts/create_from_rosbag.py
-```
-
-#### 3.1.9. Run the mapping script
-Filnally, run this code: 
-```bash
-rosrun grid_mapping create_from_rosbag.py
-```
-Then you should see these windows:
-
-![Screenshot](figures/screen_shot.png)
+> ⚠️ Note: The `-v /tmp/.X11-unix:/tmp/.X11-unix` volume mount is only required on Linux.  
+> On Windows, this option should be omitted.
 
 ---
 
+### 4. Run the Application
+Inside the container, execute:
+```bash
+rosrun grid_mapping create_from_rosbag.py
+```
 
+If everything is set up correctly, you should see the following visualization windows:
 
-## 🖼️ 4. Examples
+![demo](figures/demo.gif)
+
+---
+
+## 🖼️ 5. Examples
 
 Example maps overview and generated grid map:
 
@@ -131,5 +108,5 @@ Example maps overview and generated grid map:
 
 ## 📖 References
 
-- ROS Noetic documentation: [http://wiki.ros.org/noetic](http://wiki.ros.org/noetic)
+- ROS Noetic documentation: [noetic](http://wiki.ros.org/noetic)
 - Occupancy grid mapping concepts
